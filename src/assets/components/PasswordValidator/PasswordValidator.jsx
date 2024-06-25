@@ -1,6 +1,9 @@
 import { useState } from "react";
 import validator from "validator";
 
+// ====== UI
+import TextField from "@mui/material/TextField";
+
 function PasswordValidator() {
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -23,6 +26,7 @@ function PasswordValidator() {
     <>
       <span>Enter Password: </span>
       <input type="text" onChange={(e) => validate(e.target.value)} />
+      <TextField id="filled-basic" label="Filled" variant="filled" />
       <br />
       {errorMsg === "" ? null : (
         <span style={{ color: "red" }}>{errorMsg}</span>
