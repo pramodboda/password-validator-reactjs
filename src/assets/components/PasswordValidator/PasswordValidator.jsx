@@ -1,5 +1,4 @@
 import { useState } from "react";
-import validator from "validator";
 
 // ====== UI
 import DoneIcon from "@mui/icons-material/Done";
@@ -15,78 +14,114 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 function PasswordValidator() {
   const [errorMsg, setErrorMsg] = useState("");
+  const [strengthStatus, setStrengthStatus] = useState("");
+  const [colorStatus, setColorStatus] = useState("");
   const [minLen, setMinLen] = useState(false);
   const [minLow, setMinLow] = useState(false);
   const [minUpp, setMinUpp] = useState(false);
   const [minNum, setMinNum] = useState(false);
-  const [minSym, setMinSym] = useState(false);
+  const [minSpc, setMinSpc] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  // const validate = (value) => {
-  //   console.log(value);
-  //   // if (
-  //   //   validator.isStrongPassword(value, {
-  //   //     minLength: 8,
-  //   //     minLowercase: 1,
-  //   //     minUppercase: 1,
-  //   //     minNumbers: 1,
-  //   //     minSymbols: 1,
-  //   //   })
-  //   // ) {
-  //   //   setErrorMsg("Good Password");
-  //   // } else {
-  //   //   setErrorMsg("Weak Password");
-  //   // }
-
-  //   // if (validator.isLength(value, { min: 8 })) {
-  //   //   setMinLen(true);
-  //   // } else if (validator.isLowercase(value)) {
-  //   //   setMinLow(true);
-  //   // } else {
-  //   //   setMinLow(false);
-  //   //   setMinLen(false);
-
-  //   //   console.log(false);
-  //   // }
-  // };
-
   const validate = (value) => {
-    console.log(value);
+    const totalCriteria = 5;
+    let fulfilledCriteria = 0;
 
-    // Check if the password meets the criteria
-    const meetsLength = validator.isLength(value, { min: 8 });
-    const meetsLowercase = validator.isLowercase(value);
-    const meetsUppercase = validator.isUppercase(value);
-    const meetsNumber = validator.isNumeric(value);
-    const meetsSymbol = /[!@#$%^&*()_+{}\[\]:;<>,.?~]/.test(value);
+    /* ==============================
+    check Min 8 letters
+    ============================== */
+    const pattern1 = /.{8,}/; // min 8 letters
+    const pattern2 = /[0-9]/; // numbers from 0-9
+    const pattern3 = /[a-z]/; // letters from a-z (lowercase)
+    const pattern4 = /[A-Z]/; // letters from A-Z (uppercase)
+    const pattern5 = /[^A-Za-z0-9]/; // special characters
 
-    setMinLen(meetsLength);
-    setMinLow(meetsLowercase);
-    setMinUpp(meetsUppercase);
-    setMinNum(meetsNumber);
-    setMinSym(meetsSymbol);
+    /* ==============================
+    check Min 8 letters
+    ============================== */
+    if (pattern1.test(value)) {
+      console.log("Has Length");
+      fulfilledCriteria += 1;
+      setMinLen(true);
+    } else {
+      console.log("No length");
+      setMinLen(false);
+    }
+    /* ==============================
+    check the numbers from 0-9, It checks everywhere in the given value
+    ============================== */
+    if (pattern2.test(value)) {
+      console.log("Has Number");
+      fulfilledCriteria += 1;
+      setMinNum(true);
+    } else {
+      console.log("No Number");
+      setMinNum(false);
+    }
+    /* ==============================
+    check letters from a-z (lowercase)
+    ============================== */
+    if (pattern3.test(value)) {
+      console.log("Has Lowercase");
+      fulfilledCriteria += 1;
+      setMinLow(true);
+    } else {
+      console.log("No Lowercase");
+      setMinLow(false);
+    }
+    /* ==============================
+    check letters from A-Z (uppercase)
+    ============================== */
+    if (pattern4.test(value)) {
+      console.log("Has Uppercase");
+      fulfilledCriteria += 1;
+      setMinUpp(true);
+    } else {
+      console.log("No Uppercase");
+      setMinUpp(false);
+    }
+    /* ==============================
+        check special characters
+     ============================== */
+    if (pattern5.test(value)) {
+      console.log("Has Special");
+      fulfilledCriteria += 1;
+      setMinSpc(true);
+    } else {
+      console.log("No Special");
+      fulfilledCriteria - 1;
+      setMinSpc(false);
+    }
 
-    // Calculate overall progress (you can adjust this based on your preference)
-    const totalCriteria = 5; // Total number of criteria
-    const fulfilledCriteria = [
-      meetsLength,
-      meetsLowercase,
-      meetsUppercase,
-      meetsNumber,
-      meetsSymbol,
-    ].filter(Boolean).length;
     console.log(fulfilledCriteria);
 
+    /* ==============================
+        update progress
+     ============================== */
     const newProgress = (fulfilledCriteria / totalCriteria) * 100;
     setProgress(newProgress);
 
-    if (!value) {
-      setMinLen(false);
-      setMinLow(false);
-      setMinUpp(false);
-      setMinNum(false);
-      setMinSym(false);
-      setProgress(0);
+    switch (fulfilledCriteria) {
+      case 0:
+        setStrengthStatus("");
+        break;
+      case 1:
+        setStrengthStatus("weak");
+        break;
+      case 2:
+        setStrengthStatus("fair");
+        break;
+      case 3:
+        setStrengthStatus("good");
+        break;
+      case 4:
+        setStrengthStatus("strong");
+        break;
+      case 5:
+        setStrengthStatus("super strong");
+        break;
+      default:
+        return null;
     }
   };
 
@@ -110,7 +145,6 @@ function PasswordValidator() {
           <Typography variant="body" component="p">
             Must contain at least
           </Typography>
-
           <Typography variant="body2" component="p">
             {minLen === false ? <CloseIcon /> : <DoneIcon />}8 characters
           </Typography>
@@ -126,8 +160,9 @@ function PasswordValidator() {
             {minNum === false ? <CloseIcon /> : <DoneIcon />}1 number
           </Typography>
           <Typography variant="body2" component="p">
-            {minSym === false ? <CloseIcon /> : <DoneIcon />}1 symbol
+            {minSpc === false ? <CloseIcon /> : <DoneIcon />}1 symbol
           </Typography>
+          {strengthStatus}
         </CardContent>
       </Card>
     </>
