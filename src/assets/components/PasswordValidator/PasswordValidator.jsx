@@ -3,16 +3,27 @@ import { useState } from "react";
 // ====== UI
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
+
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+
+import IconButton from "@mui/material/IconButton";
+
+import FilledInput from "@mui/material/FilledInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
 import LinearProgress from "@mui/material/LinearProgress";
 
 function PasswordValidator() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const [errorMsg, setErrorMsg] = useState("");
   const [strengthStatus, setStrengthStatus] = useState("");
   const [colorStatus, setColorStatus] = useState("");
@@ -22,6 +33,14 @@ function PasswordValidator() {
   const [minNum, setMinNum] = useState(false);
   const [minSpc, setMinSpc] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  const redC = "#b71c1c";
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const validate = (value) => {
     const totalCriteria = 5;
@@ -81,7 +100,7 @@ function PasswordValidator() {
       setMinUpp(false);
     }
     /* ==============================
-        check special characters
+    check special characters
      ============================== */
     if (pattern5.test(value)) {
       console.log("Has Special");
@@ -96,7 +115,7 @@ function PasswordValidator() {
     console.log(fulfilledCriteria);
 
     /* ==============================
-        update progress
+    update progress
      ============================== */
     const newProgress = (fulfilledCriteria / totalCriteria) * 100;
     setProgress(newProgress);
@@ -104,6 +123,7 @@ function PasswordValidator() {
     switch (fulfilledCriteria) {
       case 0:
         setStrengthStatus("");
+        setColorStatus(redC);
         break;
       case 1:
         setStrengthStatus("weak");
@@ -127,20 +147,47 @@ function PasswordValidator() {
 
   return (
     <>
-      <Card>
+      <Card
+        sx={{
+          boxShadow:
+            "0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1);",
+        }}
+      >
         <CardContent>
-          <Typography variant="p" component="p" sx={{ mb: "1rem" }}>
-            Password:
-          </Typography>
-          <TextField
-            id="filled-basic"
-            label="Filled"
-            variant="filled"
-            onChange={(e) => validate(e.target.value)}
-          />
+          <FormControl fullWidth variant="filled">
+            <InputLabel htmlFor="filled-adornment-password">
+              Password
+            </InputLabel>
+            <FilledInput
+              sx={{ border: 0, outline: 0 }}
+              disableUnderline={true}
+              onChange={(e) => validate(e.target.value)}
+              id="filled-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+
           {errorMsg === "" ? null : <Alert severity="error">{errorMsg}</Alert>}
           <Box sx={{ width: "100%" }}>
-            <LinearProgress variant="determinate" value={progress} />
+            <LinearProgress
+              variant="determinate"
+              value={progress}
+              sx={{
+                color: "#1e1e1e",
+              }}
+            />
           </Box>
           <Typography variant="body" component="p">
             Must contain at least
