@@ -9,8 +9,10 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
+import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 
@@ -34,7 +36,12 @@ function PasswordValidator() {
   const [minSpc, setMinSpc] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const redC = "#b71c1c";
+  const greyC = "#e0e0e0";
+  const redC = "#d32f2f";
+  const deepOrangeC = "#ff5722";
+  const orangeC = "#ff9800";
+  const yellowC = "#ffb300";
+  const greenC = "#4caf50";
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -126,19 +133,24 @@ function PasswordValidator() {
         setColorStatus(redC);
         break;
       case 1:
-        setStrengthStatus("weak");
+        setStrengthStatus("Weak");
+        setColorStatus(redC);
         break;
       case 2:
-        setStrengthStatus("fair");
+        setStrengthStatus("Fair");
+        setColorStatus(deepOrangeC);
         break;
       case 3:
-        setStrengthStatus("good");
+        setStrengthStatus("Good");
+        setColorStatus(orangeC);
         break;
       case 4:
-        setStrengthStatus("strong");
+        setStrengthStatus("Strong");
+        setColorStatus(yellowC);
         break;
       case 5:
-        setStrengthStatus("super strong");
+        setStrengthStatus("Super strong");
+        setColorStatus(greenC);
         break;
       default:
         return null;
@@ -153,8 +165,8 @@ function PasswordValidator() {
             "0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1);",
         }}
       >
-        <CardContent>
-          <FormControl fullWidth variant="filled">
+        <CardContent sx={{ position: "relative" }}>
+          <FormControl fullWidth variant="filled" sx={{ marginBottom: "1rem" }}>
             <InputLabel htmlFor="filled-adornment-password">
               Password
             </InputLabel>
@@ -178,39 +190,90 @@ function PasswordValidator() {
               }
             />
           </FormControl>
-
-          {errorMsg === "" ? null : <Alert severity="error">{errorMsg}</Alert>}
-          <Box sx={{ width: "100%" }}>
-            <LinearProgress
-              variant="determinate"
-              value={progress}
-              sx={{
-                color: "#1e1e1e",
-              }}
-            />
-          </Box>
-          <Typography variant="body" component="p">
+          {/* {strengthStatus} */}
+          {!strengthStatus ? (
+            ""
+          ) : (
+            <Box
+              position="absolute"
+              right="1rem"
+              bottom="1rem"
+              bgColor={colorStatus}
+            >
+              <Chip
+                variant="outlined"
+                bgColor="inherit"
+                size="small"
+                label={strengthStatus}
+              />
+            </Box>
+          )}
+          <Typography variant="body2" component="p" mb={1}>
             Must contain at least
           </Typography>
-          <Typography variant="body2" component="p">
-            {minLen === false ? <CloseIcon /> : <DoneIcon />}8 characters
-          </Typography>
-          <Typography variant="body2" component="p">
-            {minLow === false ? <CloseIcon /> : <DoneIcon />}1 lowercase
-            character
-          </Typography>
-          <Typography variant="body2" component="p">
-            {minUpp === false ? <CloseIcon /> : <DoneIcon />}1 uppercase
-            character
-          </Typography>
-          <Typography variant="body2" component="p">
-            {minNum === false ? <CloseIcon /> : <DoneIcon />}1 number
-          </Typography>
-          <Typography variant="body2" component="p">
-            {minSpc === false ? <CloseIcon /> : <DoneIcon />}1 symbol
-          </Typography>
-          {strengthStatus}
+          <Stack direction="row" alignItems="center" gap={1}>
+            {minLen === false ? (
+              <CloseIcon sx={{ color: redC }} />
+            ) : (
+              <DoneIcon sx={{ color: greenC }} />
+            )}
+            <Typography variant="body2" component="p">
+              8 characters
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" gap={1}>
+            {minLow === false ? (
+              <CloseIcon sx={{ color: redC }} />
+            ) : (
+              <DoneIcon sx={{ color: greenC }} />
+            )}
+            <Typography variant="body2" component="p">
+              1 lowercase character
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" gap={1}>
+            {minUpp === false ? (
+              <CloseIcon sx={{ color: redC }} />
+            ) : (
+              <DoneIcon sx={{ color: greenC }} />
+            )}
+            <Typography variant="body2" component="p">
+              1 uppercase character
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" gap={1}>
+            {minNum === false ? (
+              <CloseIcon sx={{ color: redC }} />
+            ) : (
+              <DoneIcon sx={{ color: greenC }} />
+            )}
+            <Typography variant="body2" component="p">
+              1 number
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" gap={1}>
+            {minSpc === false ? (
+              <CloseIcon sx={{ color: redC }} />
+            ) : (
+              <DoneIcon sx={{ color: greenC }} />
+            )}
+            <Typography variant="body2" component="p">
+              1 symbol
+            </Typography>
+          </Stack>
         </CardContent>
+        <Box
+          sx={{
+            width: "100%",
+            color: colorStatus,
+          }}
+        >
+          <LinearProgress
+            variant="determinate"
+            value={progress}
+            color="inherit"
+          />
+        </Box>
       </Card>
     </>
   );
