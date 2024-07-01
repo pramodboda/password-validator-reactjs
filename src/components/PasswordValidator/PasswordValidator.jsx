@@ -1,5 +1,5 @@
-import { useState } from "react";
-
+import React from "react";
+import { styled } from "@mui/material/styles";
 // ====== UI
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
@@ -11,7 +11,6 @@ import CardContent from "@mui/material/CardContent";
 
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import Alert from "@mui/material/Alert";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
@@ -24,19 +23,17 @@ import InputAdornment from "@mui/material/InputAdornment";
 import LinearProgress from "@mui/material/LinearProgress";
 
 function PasswordValidator() {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
 
-  const [errorMsg, setErrorMsg] = useState("");
-  const [strengthStatus, setStrengthStatus] = useState("");
-  const [colorStatus, setColorStatus] = useState("");
-  const [minLen, setMinLen] = useState(false);
-  const [minLow, setMinLow] = useState(false);
-  const [minUpp, setMinUpp] = useState(false);
-  const [minNum, setMinNum] = useState(false);
-  const [minSpc, setMinSpc] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [strengthStatus, setStrengthStatus] = React.useState("");
+  const [colorStatus, setColorStatus] = React.useState("");
+  const [minLen, setMinLen] = React.useState(false);
+  const [minLow, setMinLow] = React.useState(false);
+  const [minUpp, setMinUpp] = React.useState(false);
+  const [minNum, setMinNum] = React.useState(false);
+  const [minSpc, setMinSpc] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
 
-  const greyC = "#e0e0e0";
   const redC = "#d32f2f";
   const deepOrangeC = "#ff5722";
   const orangeC = "#ff9800";
@@ -157,10 +154,20 @@ function PasswordValidator() {
     }
   };
 
+  // =========== Custom chip - start
+  const MuiChipCustom = styled(Chip)(() => ({
+    border: `1px solid ${colorStatus}`,
+    "& .MuiChip-label": {
+      color: colorStatus,
+    },
+  }));
+  // =========== Custom chip - end
+
   return (
     <>
       <Card
         sx={{
+          width: "20rem",
           boxShadow:
             "0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1);",
         }}
@@ -194,15 +201,9 @@ function PasswordValidator() {
           {!strengthStatus ? (
             ""
           ) : (
-            <Box
-              position="absolute"
-              right="1rem"
-              bottom="1rem"
-              bgColor={colorStatus}
-            >
-              <Chip
+            <Box position="absolute" right="1rem" bottom="1rem">
+              <MuiChipCustom
                 variant="outlined"
-                bgColor="inherit"
                 size="small"
                 label={strengthStatus}
               />

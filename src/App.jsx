@@ -1,16 +1,30 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
-import PasswordValidator from "./assets/components/PasswordValidator/PasswordValidator";
-function App() {
-  const [count, setCount] = useState(0);
+import ColorModeProvider from "./contexts/ColorModeProvider";
+import Box from "@mui/material/Box";
 
+import PasswordValidator from "./components/PasswordValidator/PasswordValidator";
+
+import ToggleThemeBtn from "./components/ToggleThemeBtn/ToggleThemeBtn";
+
+function App() {
   return (
-    <>
-      <PasswordValidator />
-    </>
+    <ColorModeProvider>
+      <Box
+        display="flex"
+        minHeight="100vh"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+        sx={{
+          backgroundColor: "background.default",
+          color: "text.primary",
+        }}
+      >
+        <ToggleThemeBtn />
+        <PasswordValidator />
+      </Box>
+    </ColorModeProvider>
   );
 }
 
