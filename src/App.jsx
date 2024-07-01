@@ -1,15 +1,20 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
-import PasswordValidator from "./assets/components/PasswordValidator/PasswordValidator";
-function App() {
-  const [count, setCount] = useState(0);
+import Box from "@mui/material/Box";
 
+import PasswordValidator from "./components/PasswordValidator/PasswordValidator";
+
+function App() {
   return (
     <>
-      <PasswordValidator />
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
+        <PasswordValidator />
+      </Box>
     </>
   );
 }
