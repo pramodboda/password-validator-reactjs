@@ -1,6 +1,7 @@
 # Password Validator - ReactJS
 
-Project: Password Validator
+Project Name: Password Validator
+Description: Password validator checks the password strength of the user input password.
 
 ## Technologies
 
