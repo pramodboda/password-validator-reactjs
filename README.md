@@ -1,6 +1,6 @@
 # Password Validator - ReactJS
 
-Project: Password Validator using ReactJS
+Project: Password Validator
 
 ## Technologies
 
