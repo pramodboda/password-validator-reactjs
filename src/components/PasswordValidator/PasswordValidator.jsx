@@ -219,7 +219,7 @@ function PasswordValidator() {
               <DoneIcon sx={{ color: greenC }} />
             )}
             <Typography variant="body2" component="p">
-              8 characters
+              8 characters minimum
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center" gap={1}>
